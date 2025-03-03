@@ -21,19 +21,19 @@ services:
       - ./postgres/platform_repo:/var/lib/postgresql/data/pgdata
     networks:
       - platform-network
-  statetransit-preview:
+  docker-with-spring-profile:
     build:
-      dockerfile: app/Dockerfile
-      args:
-        JAR_FILE: config-server/target/app.jar
-      tags:
-        - localhost:8080/app:0.0.1
+      context: ./platform
+      target: platform_with_jar
+#    image: docker-with-spring-profile:latest
     environment:
-      SPRING_PROFILES_ACTIVE: native
-    volumes:
-      - './config:'
+      SPRING_PROFILES_ACTIVE: test
+    depends_on:
+      db:
+        condition: service_healthy
+        restart: true
 #volumes:
-  # certbot-etc:
+# certbot-etc:
 #  wordpress:
 #  platform-repo:
 networks:
