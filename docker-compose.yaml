@@ -1,41 +1,57 @@
 version: '3'
+
 services:
+
   db:
-#    image: postgres:16.8-alpine3.21
+    #    image: postgres:16.8-alpine3.21
     build:
       context: ./postgres
       target: postgres_with_script
     container_name: platform-repo
     restart: unless-stopped
     expose:
-      - 5432
-    command: -p 5432
-    ports:
       - 5432:5432
-#    env_file: .env
+    env_file: .env
     environment:
-      - POSTGRES_DB=platform-repo
-      - POSTGRES_USER_FILE=/run/secrets/postgres-user
-      - POSTGRES_PASSWORD_FILE=/run/secrets/postgres-password
-      - PGDATA=/var/lib/postgresql/data/pgdata
-    secrets:
-      - postgres-user
-      - postgres-password
+      POSTGRES_USER: '{$POSTGRES_USER}'
+      POSTGRES_PASSWORD: '{$POSTGRES_PASSWORD}'
+      POSTGRES_DB: '{$POSTGRES_DB}'
+      PGDATA: /var/lib/postgresql/data/pgdata
     volumes:
-#      - db-data:/var/lib/postgresql/data
-#      - ./postgres/:/docker-entrypoint-initdb.d/
+      #      - db-data:/var/lib/postgresql/data
+      #      - ./postgres/:/docker-entrypoint-initdb.d/
       - ./postgres/platform_repo:/var/lib/postgresql/data/pgdata
     networks:
-      - platform-network
-secrets:
-  postgres-user:
-    file: .postgres-user
-  postgres-password:
-    file: .postgres-password
+      platform-network:
+        - ipv4_address: 172.18.2.2
+
+  docker-with-spring-profile:
+    build:
+      context: ./platform
+      target: platform_with_jar
+    #    image: docker-with-spring-profile:latest
+    environment:
+      SPRING_PROFILES_ACTIVE: test
+    depends_on:
+      db:
+        condition: service_healthy
+        restart: true
+
 #volumes:
 # certbot-etc:
 #  wordpress:
 #  platform-repo:
+
 networks:
   platform-network:
     driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.18.2.1
+
+secrets:
+  db_pass:
+    file: .db_pass
+  db_name:
+    file: .db_name
