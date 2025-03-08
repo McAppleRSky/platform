@@ -26,7 +26,7 @@ services:
       - ./postgres/platform_repo:/var/lib/postgresql/data/pgdata
     networks:
       platform-network:
-        - ipv4_address: 172.18.2.2
+        - ipv4_address: 172.18.1.2
 
   docker-with-spring-profile:
     build:
@@ -35,6 +35,9 @@ services:
     #    image: docker-with-spring-profile:latest
     environment:
       SPRING_PROFILES_ACTIVE: test
+    networks:
+      platform-network:
+        - ipv4_address: 172.18.1.3
     depends_on:
       db:
         condition: service_healthy
@@ -51,7 +54,8 @@ networks:
     ipam:
       driver: default
       config:
-        - subnet: 172.18.2.1
+        - subnet: 172.18.1.0/24
+          gateway: 172.18.1.1
 
 secrets:
   db_name:
