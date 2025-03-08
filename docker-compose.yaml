@@ -51,7 +51,7 @@ networks:
         - subnet: 172.18.2.1
 
 secrets:
-  db_pass:
-    file: .db_pass
   db_name:
     file: .db_name
+  db_pass:
+    file: .db_pass
