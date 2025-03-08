@@ -8,30 +8,30 @@ services:
     container_name: platform-repo
     restart: unless-stopped
     expose:
+      - 5432
+    command: -p 5432
+    ports:
       - 5432:5432
-    env_file: .env
+#    env_file: .env
     environment:
-      POSTGRES_USER: '{$POSTGRES_USER}'
-      POSTGRES_PASSWORD: '{$POSTGRES_PASSWORD}'
-      POSTGRES_DB: '{$POSTGRES_DB}'
-      PGDATA: /var/lib/postgresql/data/pgdata
+      - POSTGRES_DB=platform-repo
+      - POSTGRES_USER_FILE=/run/secrets/postgres-user
+      - POSTGRES_PASSWORD_FILE=/run/secrets/postgres-password
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    secrets:
+      - postgres-user
+      - postgres-password
     volumes:
 #      - db-data:/var/lib/postgresql/data
 #      - ./postgres/:/docker-entrypoint-initdb.d/
       - ./postgres/platform_repo:/var/lib/postgresql/data/pgdata
     networks:
       - platform-network
-  docker-with-spring-profile:
-    build:
-      context: ./platform
-      target: platform_with_jar
-#    image: docker-with-spring-profile:latest
-    environment:
-      SPRING_PROFILES_ACTIVE: test
-    depends_on:
-      db:
-        condition: service_healthy
-        restart: true
+secrets:
+  postgres-user:
+    file: .postgres-user
+  postgres-password:
+    file: .postgres-password
 #volumes:
 # certbot-etc:
 #  wordpress:
