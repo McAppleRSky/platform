@@ -1,5 +1,7 @@
 version: '3'
+
 services:
+
   db:
 #    image: postgres:16.8-alpine3.21
     build:
@@ -20,7 +22,9 @@ services:
 #      - ./postgres/:/docker-entrypoint-initdb.d/
       - ./postgres/platform_repo:/var/lib/postgresql/data/pgdata
     networks:
-      - platform-network
+      platform-network:
+        - ipv4_address: 172.18.2.2
+
   docker-with-spring-profile:
     build:
       context: ./platform
@@ -32,10 +36,22 @@ services:
       db:
         condition: service_healthy
         restart: true
+
 #volumes:
 # certbot-etc:
 #  wordpress:
 #  platform-repo:
+
 networks:
   platform-network:
     driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.18.2.1
+
+secrets:
+  db_pass:
+    file: .db_pass
+  db_name:
+    file: .db_name
