@@ -15,11 +15,11 @@ services:
     environment:
       POSTGRES_DB: platform-repo
       PGDATA: /var/lib/postgresql/data/pgdata
-      POSTGRES_USER_FILE: /run/secrets/.db_username
-      POSTGRES_PASSWORD_FILE: /run/secrets/.db_password
+#      POSTGRES_USER_FILE: /run/secrets/.db_username
+#      POSTGRES_PASSWORD_FILE: /run/secrets/.db_password
     secrets:
-      - db_username
-      - db_password
+      - secret_username
+      - secret_password
     volumes:
       #      - db-data:/var/lib/postgresql/data
       #      - ./postgres/:/docker-entrypoint-initdb.d/
