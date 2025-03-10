@@ -3,7 +3,6 @@ version: '3'
 services:
 
   db:
-    #    image: postgres:16.8-alpine3.21
     build:
       context: ./postgres
       target: postgres_with_script
@@ -11,38 +10,28 @@ services:
     restart: unless-stopped
     expose:
       - 5432:5432
-#    env_file: .env
+    env_file: .env
     environment:
       PGDATA: /var/lib/postgresql/data/pgdata
-      POSTGRES_DB: platform-repo
-#      POSTGRES_USER:
-#      POSTGRES_PASSWORD:
     volumes:
-      #      - db-data:/var/lib/postgresql/data
-      #      - ./postgres/:/docker-entrypoint-initdb.d/
       - ./postgres/platform_repo:/var/lib/postgresql/data/pgdata
     networks:
       platform-network:
         ipv4_address: 172.18.1.2
 
-#  docker-with-spring-profile:
-#    build:
-#      context: ./platform
-#      target: platform_with_jar
-#    environment:
-#      SPRING_PROFILES_ACTIVE: test
-#    networks:
-#      platform-network:
-#        ipv4_address: 172.18.1.3
-#    depends_on:
-#      db:
-#        condition: service_healthy
-#        restart: true
-
-#volumes:
-# certbot-etc:
-#  wordpress:
-#  platform-repo:
+  docker-with-spring-profile:
+    build:
+      context: ./platform
+      target: platform_with_jar
+    environment:
+      SPRING_PROFILES_ACTIVE: test
+    networks:
+      platform-network:
+        ipv4_address: 172.18.1.3
+    depends_on:
+      db:
+        condition: service_healthy
+        restart: true
 
 networks:
   platform-network:
