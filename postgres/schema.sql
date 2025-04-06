@@ -1,2 +1,1 @@
-CREATE SCHEMA wdata;
-SET search_path TO wdata, public;
+CREATE DATABASE platform-repo;
