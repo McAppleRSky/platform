@@ -1,4 +1,4 @@
-package ru.khtu.lease;
+package ru.khtu.platform;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
