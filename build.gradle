@@ -31,14 +31,14 @@ dependencies {
 //	compileOnly 'com.google.code.findbugs:jsr305:3.0.2' // notNull
 	compileOnly "org.jetbrains:annotations:21.0.1"
 	implementation "org.apache.commons:commons-lang3:3.17.0"
-//	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-//	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 //	implementation 'org.springframework.boot:spring-boot-starter-security'
 //	implementation "com.maciejwalkowiak.spring:spring-boot-startup-report:0.2.0"
-//	implementation files('lib/h2-2.2.224.jar')
+	implementation files('lib/h2-2.2.224.jar')
 //	implementation "org.postgresql:postgresql"
-//	implementation "org.flywaydb:flyway-core:9.22.3"
+	implementation "org.flywaydb:flyway-core:9.22.3"
 //	implementation 'org.apache.httpcomponents.client5:httpclient5:5.4.4'
 	testCompileOnly 'org.projectlombok:lombok'
 	testAnnotationProcessor 'org.projectlombok:lombok'
